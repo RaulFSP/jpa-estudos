@@ -5,6 +5,7 @@
 package io.github.tutorial.jpa.repository;
 
 import io.github.tutorial.jpa.entities.Categoria;
+import java.util.Optional;
 
 /**
  *
@@ -12,4 +13,5 @@ import io.github.tutorial.jpa.entities.Categoria;
  */
 public interface CategoriaRepository extends CrudRepository<Categoria, Long> {
     
+    Optional<Categoria> findByNome(String nome);
 }
