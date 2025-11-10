@@ -13,9 +13,12 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 import org.hibernate.annotations.CreationTimestamp;
 
 /**
@@ -40,6 +43,10 @@ public class Produto {
     @JoinColumn(name = "id_categoria", nullable = false)
     private Categoria categoria;
 
+    @OneToMany(mappedBy = "produto")
+    private Set<ItemPedido> items = new HashSet<>();
+    
+    
     @CreationTimestamp
     private LocalDate dateCreate;
 

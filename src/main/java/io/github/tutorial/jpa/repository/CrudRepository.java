@@ -15,4 +15,6 @@ public interface CrudRepository<X, Y> {
     void delete(X entity);
 
     List<X> findAll();
+    
+    void merge(X entity);
 }

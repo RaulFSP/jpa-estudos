@@ -79,4 +79,15 @@ public class CrudRepositoryImpl<X, Y> implements CrudRepository<X, Y> {
         }
     }
 
+    @Override
+    public void merge(X entity) {
+        try (var em = JPAUtil.getInstance().getEmf().createEntityManager()) {
+            em.getTransaction().begin();
+            em.merge(entity);
+            em.getTransaction().commit();
+
+            
+        }
+    }
+
 }
