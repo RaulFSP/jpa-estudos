@@ -16,8 +16,11 @@ import io.github.tutorial.jpa.repository.PedidoRepository;
 import io.github.tutorial.jpa.repository.PedidoRepositoryImpl;
 import io.github.tutorial.jpa.repository.ProdutoRepository;
 import io.github.tutorial.jpa.repository.ProdutoRepositoryImpl;
+import io.github.tutorial.jpa.repository.RelatorioRepository;
+import io.github.tutorial.jpa.repository.RelatorioRepositoryImpl;
 import jakarta.transaction.Transactional;
 import java.math.BigDecimal;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
@@ -33,6 +36,26 @@ public class TutorialJpa {
         insertCliente();
         insertPedido();
         insertItems();
+        imprimirRelatorio();
+        imprimirCliente();
+    }
+
+    private static void imprimirCliente() {
+        ClienteRepository clienteRepository = new ClienteRepositoryImpl();
+        var opt = clienteRepository.findClienteByNome("bel");
+        if (opt.isPresent()) {
+            System.out.println(opt.get().toString());
+        } else {
+            System.out.println("nulo");
+        }
+
+    }
+
+    private static void imprimirRelatorio() {
+        RelatorioRepository relatorioRepository = new RelatorioRepositoryImpl();
+        var resultado = relatorioRepository.relatorioVendasDto();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        resultado.forEach(item -> System.out.println("|%s|%d|%s|".formatted(item.nomeProduto(), item.quantidade(), formatter.format(item.dataRecente()))));
     }
 
     private static void insertCliente() {
@@ -65,9 +88,9 @@ public class TutorialJpa {
                 new ItemPedido(null, produtoA.getPreco(), 2, produtoA, pedidoA),
                 new ItemPedido(null, produtoB.getPreco(), 1, produtoB, pedidoA),
                 new ItemPedido(null, produtoC.getPreco(), 5, produtoC, pedidoA));
-        
-        pedidoA =pedidoRepository.saveWithItems(items,pedidoA);
-        System.out.println(pedidoA.toString());
+
+        pedidoRepository.saveWithItems(items, pedidoA);
+
     }
 
     private static void insertCategoria() {
